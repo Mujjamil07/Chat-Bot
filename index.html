@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mujjamil's AI Resume Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- QR Code library removed - using simpler approach -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="header-text">
+                    <h3>Mujjamil's AI Assistant</h3>
+                    <p>Full Stack Developer & Data Analyst</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <button class="qr-btn" onclick="showQRCode()">
+                    <i class="fas fa-qrcode"></i>
+                </button>
+                <button class="clear-btn" onclick="clearChat()">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="message-content">
+                    <p>🚀 Hi, I'm Mujjamil's AI Assistant! I'm here to showcase his amazing journey as a Full Stack Developer & Data Analyst.</p>
+                    <p>💡 Ask me anything about his skills, projects, or experience - I'll show you some cool interactive elements!</p>
+                    <p>✨ <strong>New Features:</strong> Try the 🌙 dark mode toggle and 📄 download his resume!</p>
+                    <span class="message-time">Just now</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Floating Action Button -->
+        <div class="floating-action-btn" id="floatingActionBtn" onclick="toggleQuickActions()" title="Quick Actions - Click for options">
+            <i class="fas fa-bolt" id="fabIcon"></i>
+            <div class="fab-tooltip">Quick Actions</div>
+        </div>
+        
+        <!-- Quick Action Buttons - Hidden by default -->
+        <div class="quick-actions" id="quickActions">
+            <button onclick="askQuestion('Tell me about yourself')">👤 About Me</button>
+            <button onclick="askQuestion('What are your skills?')">⚡ Skills</button>
+            <button onclick="askQuestion('Show me your projects')">🎯 Projects</button>
+            <button onclick="askQuestion('What is your experience?')">💼 Experience</button>
+            <button onclick="askQuestion('Tell me about your education')">📚 Education</button>
+            <button onclick="askQuestion('What certificates do you have?')">🏆 Certificates</button>
+            <button onclick="askQuestion('How can I contact you?')">📞 Contact</button>
+                                                <button onclick="downloadResume()">📄 Download Resume (PDF)</button>
+        </div>
+        
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <input type="text" id="messageInput" placeholder="Ask about Mujjamil's professional background..." onkeypress="handleKeyPress(event)">
+                <button class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>QR Code for Resume</h3>
+                <span class="close" onclick="closeQRModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="qrCode"></div>
+                <p>Scan this QR code to access Mujjamil's interactive resume chatbot!</p>
+                <button class="download-btn" onclick="downloadQR()">
+                    <i class="fas fa-download"></i> Download QR Code
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
