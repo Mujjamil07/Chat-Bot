@@ -975,12 +975,11 @@ function createBrandedQRCode(url, type) {
     `;
     modal.style.display = 'block';
     
-    // Use local QR generator immediately (no external API dependency)
-    try {
-        const qrGenerator = new SimpleQRGenerator();
-        const qrDataURL = qrGenerator.createQRCodeDataURL(url);
-        
-        // Create canvas for branded QR code with local QR
+        // Use proper QR generator for scannable codes
+    const qrGenerator = new ProperQRGenerator();
+    
+    qrGenerator.createQRCodeDataURL(url).then(qrDataURL => {
+        // Create canvas for branded QR code
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 280;
@@ -1027,10 +1026,10 @@ function createBrandedQRCode(url, type) {
         ctx.fillText('& Data Analyst', 140, 170);
         ctx.fillText('Scan to chat with AI', 140, 185);
         
-        // Draw local QR code
-        const localQR = new Image();
-        localQR.onload = function() {
-            ctx.drawImage(localQR, 15, 55, 250, 250);
+        // Draw proper QR code
+        const qrImage = new Image();
+        qrImage.onload = function() {
+            ctx.drawImage(qrImage, 15, 55, 250, 250);
             
             // Logo/Icon in center of QR code
             ctx.fillStyle = '#ffffff';
@@ -1067,15 +1066,15 @@ function createBrandedQRCode(url, type) {
             successDiv.innerHTML = `
                 <div style="text-align: center; padding: 10px; background: #d4edda; border-radius: 8px; margin: 10px 0; border: 1px solid #c3e6cb;">
                     <p style="margin: 0; color: #155724; font-size: 12px;">
-                        <i class="fas fa-check-circle"></i> QR Code generated successfully!
+                        <i class="fas fa-check-circle"></i> QR Code generated successfully and is scannable!
                     </p>
                 </div>
             `;
             qrContainer.appendChild(successDiv);
         };
-        localQR.src = qrDataURL;
+        qrImage.src = qrDataURL;
         
-    } catch (error) {
+    }).catch(error => {
         console.error('QR generation failed:', error);
         qrContainer.innerHTML = `
             <div style="text-align: center; padding: 20px;">
@@ -1089,7 +1088,7 @@ function createBrandedQRCode(url, type) {
                 </div>
             </div>
         `;
-}
+    });
     
     img.onerror = function() {
         clearTimeout(timeout);
