@@ -1159,19 +1159,123 @@ function createBrandedQRCode(url, type) {
     
     img.onerror = function() {
         clearTimeout(timeout);
-        console.error('Failed to load QR code');
-        qrContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <div style="display: inline-block; padding: 15px; background: #f8d7da; border-radius: 10px; border: 2px solid #dc3545;">
-                    <i class="fas fa-times-circle" style="font-size: 24px; color: #dc3545; margin-bottom: 10px;"></i>
-                    <p style="margin: 0; color: #721c24; font-weight: bold;">QR Code generation failed</p>
-                    <p style="margin: 5px 0 0 0; color: #721c24; font-size: 12px;">Please try again or check your internet connection.</p>
-                    <button onclick="showQRCode()" style="margin-top: 10px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        <i class="fas fa-redo"></i> Try Again
-                    </button>
+        console.error('Failed to load QR code from API, using local generator');
+        
+        // Use local QR generator as fallback
+        try {
+            const qrGenerator = new SimpleQRGenerator();
+            const qrDataURL = qrGenerator.createQRCodeDataURL(url);
+            
+            // Create canvas for branded QR code with local QR
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 280;
+            canvas.height = 320;
+            
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 280, 320);
+            
+            // Border
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(2, 2, 276, 316);
+            
+            // Title
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 18px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Mujjamil Shaikh', 140, 25);
+            
+            // Subtitle
+            ctx.fillStyle = '#666';
+            ctx.font = '12px Arial';
+            ctx.fillText('AI Resume Assistant', 140, 42);
+            
+            // Background highlight for text behind QR code
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillRect(10, 125, 260, 70);
+            
+            // Border around text area
+            ctx.strokeStyle = '#667eea';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(10, 125, 260, 70);
+            
+            // Type indicator (behind QR code)
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 15px Arial';
+            ctx.fillText(type, 140, 140);
+            
+            // Contact info (behind QR code)
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 12px Arial';
+            ctx.fillText('Full Stack Developer', 140, 155);
+            ctx.fillText('& Data Analyst', 140, 170);
+            ctx.fillText('Scan to chat with AI', 140, 185);
+            
+            // Draw local QR code
+            const localQR = new Image();
+            localQR.onload = function() {
+                ctx.drawImage(localQR, 15, 55, 250, 250);
+                
+                // Logo/Icon in center of QR code
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(125, 155, 30, 30);
+                ctx.fillStyle = '#667eea';
+                ctx.font = '20px Arial';
+                ctx.fillText('🤖', 130, 175);
+                
+                // Bottom text
+                ctx.fillStyle = '#667eea';
+                ctx.font = 'bold 11px Arial';
+                ctx.fillText('Professional QR Code', 140, 280);
+                
+                ctx.fillStyle = '#999';
+                ctx.font = '9px Arial';
+                ctx.fillText('Ready for Resume', 140, 295);
+                ctx.fillText('Download & Use', 140, 308);
+                
+                // Display the result
+                const brandedImg = new Image();
+                brandedImg.src = canvas.toDataURL();
+                brandedImg.style.width = '280px';
+                brandedImg.style.height = '320px';
+                brandedImg.style.borderRadius = '12px';
+                brandedImg.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.15)';
+                brandedImg.style.margin = '0 auto';
+                brandedImg.style.display = 'block';
+                
+                qrContainer.innerHTML = '';
+                qrContainer.appendChild(brandedImg);
+                
+                // Add success message
+                const successDiv = document.createElement('div');
+                successDiv.innerHTML = `
+                    <div style="text-align: center; padding: 10px; background: #d4edda; border-radius: 8px; margin: 10px 0; border: 1px solid #c3e6cb;">
+                        <p style="margin: 0; color: #155724; font-size: 12px;">
+                            <i class="fas fa-check-circle"></i> QR Code generated successfully (Local)
+                        </p>
+                    </div>
+                `;
+                qrContainer.appendChild(successDiv);
+            };
+            localQR.src = qrDataURL;
+            
+        } catch (error) {
+            console.error('Local QR generation also failed:', error);
+            qrContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="display: inline-block; padding: 15px; background: #f8d7da; border-radius: 10px; border: 2px solid #dc3545;">
+                        <i class="fas fa-times-circle" style="font-size: 24px; color: #dc3545; margin-bottom: 10px;"></i>
+                        <p style="margin: 0; color: #721c24; font-weight: bold;">QR Code generation failed</p>
+                        <p style="margin: 5px 0 0 0; color: #721c24; font-size: 12px;">Please try again or check your internet connection.</p>
+                        <button onclick="showQRCode()" style="margin-top: 10px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
     };
 }
 
