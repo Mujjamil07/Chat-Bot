@@ -1016,8 +1016,15 @@ function createBrandedQRCode(url, type) {
     
     if (!qrContainer || !modal) return;
     
-    // Clear previous content
-    qrContainer.innerHTML = '';
+    // Clear previous content and show loading
+    qrContainer.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+            <div style="display: inline-block; padding: 15px; background: #f8f9fa; border-radius: 10px; border: 2px solid #667eea;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 24px; color: #667eea; margin-bottom: 10px;"></i>
+                <p style="margin: 0; color: #667eea; font-weight: bold;">Generating Professional QR Code...</p>
+            </div>
+        </div>
+    `;
     modal.style.display = 'block';
     
     // Generate QR code
@@ -1025,9 +1032,27 @@ function createBrandedQRCode(url, type) {
     
     const img = new Image();
     img.crossOrigin = 'anonymous';
+    
+    // Set timeout for image loading
+    const timeout = setTimeout(() => {
+        if (!img.complete) {
+            qrContainer.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="display: inline-block; padding: 15px; background: #fff3cd; border-radius: 10px; border: 2px solid #ffc107;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 24px; color: #ffc107; margin-bottom: 10px;"></i>
+                        <p style="margin: 0; color: #856404; font-weight: bold;">QR Code generation taking longer than expected...</p>
+                        <p style="margin: 5px 0 0 0; color: #856404; font-size: 12px;">Please wait or try again.</p>
+                    </div>
+                </div>
+            `;
+        }
+    }, 3000);
+    
     img.src = qrUrl;
     
     img.onload = function() {
+        clearTimeout(timeout);
+        
         // Create canvas for branded QR code
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -1133,11 +1158,18 @@ function createBrandedQRCode(url, type) {
     };
     
     img.onerror = function() {
+        clearTimeout(timeout);
         console.error('Failed to load QR code');
         qrContainer.innerHTML = `
             <div style="text-align: center; padding: 20px;">
-                <div style="font-size: 48px; color: #667eea; margin-bottom: 10px;">❌</div>
-                <p style="color: #666;">Failed to generate QR code. Please try again.</p>
+                <div style="display: inline-block; padding: 15px; background: #f8d7da; border-radius: 10px; border: 2px solid #dc3545;">
+                    <i class="fas fa-times-circle" style="font-size: 24px; color: #dc3545; margin-bottom: 10px;"></i>
+                    <p style="margin: 0; color: #721c24; font-weight: bold;">QR Code generation failed</p>
+                    <p style="margin: 5px 0 0 0; color: #721c24; font-size: 12px;">Please try again or check your internet connection.</p>
+                    <button onclick="showQRCode()" style="margin-top: 10px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
             </div>
         `;
     };
