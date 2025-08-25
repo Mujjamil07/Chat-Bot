@@ -851,78 +851,26 @@ function showQRCode() {
         
         if (!modal || !qrContainer) {
             console.error('QR modal elements not found');
-            console.log('QR code feature not available');
             return;
         }
-        
-        // Clear previous QR code
-        qrContainer.innerHTML = '';
         
         // Get current URL
         const currentURL = window.location.href;
         
         if (!currentURL) {
             console.error('Current URL not available');
-            console.log('Cannot generate QR code: URL not found');
             return;
         }
         
         // Check if running locally and provide branded QR code
         if (currentURL.startsWith('file://')) {
-            // Create a branded QR code with logo
             createBrandedQRCode('https://github.com/Mujjamil07', 'Local Development');
-            return;
+        } else {
+            createBrandedQRCode(currentURL, 'Live Chatbot');
         }
-        
-        console.log('Generating QR code for URL:', currentURL);
-        
-        // Create branded QR code with logo
-        createBrandedQRCode(currentURL, 'Live Chatbot');
-        
-        img.onerror = function() {
-            console.error('Failed to load QR code from QR Server API');
-            // Try alternative QR service
-            const altQrUrl = `https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(currentURL)}&chco=667eea`;
-            const altImg = document.createElement('img');
-            altImg.src = altQrUrl;
-            altImg.style.width = '200px';
-            altImg.style.height = '200px';
-            altImg.style.borderRadius = '10px';
-            altImg.style.border = '2px solid #667eea';
-            
-            altImg.onload = function() {
-                qrContainer.innerHTML = '';
-                qrContainer.appendChild(altImg);
-                console.log('QR Code generated successfully using Google Charts API (fallback)');
-            };
-            
-            altImg.onerror = function() {
-                console.error('Both QR services failed');
-                // Final fallback: Create a simple text-based QR representation
-                qrContainer.innerHTML = `
-                    <div style="text-align: center; padding: 20px;">
-                        <div style="font-size: 48px; color: #667eea; margin-bottom: 10px;">📱</div>
-                        <h3 style="color: #667eea; margin-bottom: 10px;">QR Code</h3>
-                        <p style="color: #666; font-size: 12px; word-break: break-all;">${currentURL}</p>
-                        <p style="color: #999; font-size: 11px; margin-top: 10px;">Scan this URL with your phone's camera</p>
-                        <p style="color: #999; font-size: 10px; margin-top: 5px;">Or visit: <a href="${currentURL}" target="_blank">${currentURL}</a></p>
-                    </div>
-                `;
-                console.log('QR Code fallback displayed');
-            };
-        };
-        
-        // Add timeout for image loading
-        setTimeout(() => {
-            if (qrContainer.querySelector('img') === null && qrContainer.querySelector('div') && qrContainer.querySelector('div').innerHTML.includes('Generating')) {
-                console.log('QR code loading timeout, trying fallback...');
-                img.onerror();
-            }
-        }, 5000);
         
     } catch (error) {
         console.error('Error in showQRCode function:', error);
-        console.log('QR code generation completed successfully');
     }
 }
 
