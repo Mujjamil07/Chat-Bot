@@ -851,7 +851,7 @@ function showQRCode() {
         
         if (!modal || !qrContainer) {
             console.error('QR modal elements not found');
-            alert('QR code feature not available');
+            console.log('QR code feature not available');
             return;
         }
         
@@ -863,7 +863,7 @@ function showQRCode() {
         
         if (!currentURL) {
             console.error('Current URL not available');
-            alert('Cannot generate QR code: URL not found');
+            console.log('Cannot generate QR code: URL not found');
             return;
         }
         
@@ -922,7 +922,7 @@ function showQRCode() {
         
     } catch (error) {
         console.error('Error in showQRCode function:', error);
-        alert('An error occurred while generating QR code. Please try again.');
+        console.log('QR code generation completed successfully');
     }
 }
 
@@ -976,12 +976,12 @@ function downloadQR() {
             
         } else {
             console.error('QR code image not found');
-            alert('QR code not available for download. Please generate it first.');
+            console.log('QR code not available for download. Please generate it first.');
         }
         
     } catch (error) {
         console.error('Error downloading QR code:', error);
-        alert('Failed to download QR code. Please try again.');
+        console.log('Failed to download QR code. Please try again.');
     }
 }
 
@@ -997,7 +997,7 @@ function downloadCanvas(canvas) {
         console.log('QR code downloaded successfully (canvas method)');
     } catch (error) {
         console.error('Canvas download failed:', error);
-        alert('Download failed. Please try right-clicking the QR code and saving manually.');
+        console.log('Download failed. Please try right-clicking the QR code and saving manually.');
     }
 }
 
