@@ -1027,33 +1027,12 @@ function createBrandedQRCode(url, type) {
     `;
     modal.style.display = 'block';
     
-    // Generate QR code
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}&color=667eea`;
-    
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    
-    // Set timeout for image loading
-    const timeout = setTimeout(() => {
-        if (!img.complete) {
-            qrContainer.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div style="display: inline-block; padding: 15px; background: #fff3cd; border-radius: 10px; border: 2px solid #ffc107;">
-                        <i class="fas fa-exclamation-triangle" style="font-size: 24px; color: #ffc107; margin-bottom: 10px;"></i>
-                        <p style="margin: 0; color: #856404; font-weight: bold;">QR Code generation taking longer than expected...</p>
-                        <p style="margin: 5px 0 0 0; color: #856404; font-size: 12px;">Please wait or try again.</p>
-                    </div>
-                </div>
-            `;
-        }
-    }, 3000);
-    
-    img.src = qrUrl;
-    
-    img.onload = function() {
-        clearTimeout(timeout);
+    // Use local QR generator immediately (no external API dependency)
+    try {
+        const qrGenerator = new SimpleQRGenerator();
+        const qrDataURL = qrGenerator.createQRCodeDataURL(url);
         
-        // Create canvas for branded QR code
+        // Create canvas for branded QR code with local QR
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 280;
@@ -1088,74 +1067,81 @@ function createBrandedQRCode(url, type) {
         ctx.lineWidth = 1;
         ctx.strokeRect(10, 125, 260, 70);
         
-        // Type indicator (behind QR code) - more visible
+        // Type indicator (behind QR code)
         ctx.fillStyle = '#667eea';
         ctx.font = 'bold 15px Arial';
         ctx.fillText(type, 140, 140);
         
-        // Contact info (behind QR code) - more visible
+        // Contact info (behind QR code)
         ctx.fillStyle = '#333';
         ctx.font = 'bold 12px Arial';
         ctx.fillText('Full Stack Developer', 140, 155);
         ctx.fillText('& Data Analyst', 140, 170);
         ctx.fillText('Scan to chat with AI', 140, 185);
         
-        // QR Code (on top) - slightly transparent
-        ctx.globalAlpha = 0.9;
-        ctx.drawImage(img, 15, 55, 250, 250);
-        ctx.globalAlpha = 1.0;
-        
-        // Logo/Icon in center of QR code
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(125, 155, 30, 30);
-        ctx.fillStyle = '#667eea';
-        ctx.font = '20px Arial';
-        ctx.fillText('🤖', 130, 175);
-        
-        // Bottom text (below QR code)
-        ctx.fillStyle = '#667eea';
-        ctx.font = 'bold 11px Arial';
-        ctx.fillText('Professional QR Code', 140, 280);
-        
-        // Bottom contact info
-        ctx.fillStyle = '#999';
-        ctx.font = '9px Arial';
-        ctx.fillText('Ready for Resume', 140, 295);
-        ctx.fillText('Download & Use', 140, 308);
-        
-        // Convert to image and display
-        const brandedImg = new Image();
-        brandedImg.src = canvas.toDataURL();
-        brandedImg.style.width = '280px';
-        brandedImg.style.height = '320px';
-        brandedImg.style.borderRadius = '12px';
-        brandedImg.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.15)';
-        brandedImg.style.margin = '0 auto';
-        brandedImg.style.display = 'block';
-        
-        qrContainer.innerHTML = '';
-        qrContainer.appendChild(brandedImg);
-        
-        // Add info text for local development
-        if (type === 'Local Development') {
-            const infoDiv = document.createElement('div');
-            infoDiv.style.marginTop = '20px';
-            infoDiv.innerHTML = `
-                <div style="text-align: center; padding: 15px; background: #f8f9fa; border-radius: 8px; margin: 15px 0;">
-                    <p style="color: #666; font-size: 13px; margin-bottom: 10px;">This QR code links to Mujjamil's GitHub profile. Deploy your chatbot online to get a direct link.</p>
-                    <div style="text-align: left; font-size: 11px; color: #666;">
-                        <p style="margin: 5px 0;"><strong>Deploy Options:</strong></p>
-                        <p style="margin: 3px 0;">• <strong>Netlify:</strong> Drag & drop to netlify.com</p>
-                        <p style="margin: 3px 0;">• <strong>GitHub Pages:</strong> Upload to GitHub</p>
-                        <p style="margin: 3px 0;">• <strong>Vercel:</strong> Import from GitHub</p>
-                    </div>
+        // Draw local QR code
+        const localQR = new Image();
+        localQR.onload = function() {
+            ctx.drawImage(localQR, 15, 55, 250, 250);
+            
+            // Logo/Icon in center of QR code
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(125, 155, 30, 30);
+            ctx.fillStyle = '#667eea';
+            ctx.font = '20px Arial';
+            ctx.fillText('🤖', 130, 175);
+            
+            // Bottom text
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 11px Arial';
+            ctx.fillText('Professional QR Code', 140, 280);
+            
+            ctx.fillStyle = '#999';
+            ctx.font = '9px Arial';
+            ctx.fillText('Ready for Resume', 140, 295);
+            ctx.fillText('Download & Use', 140, 308);
+            
+            // Display the result
+            const brandedImg = new Image();
+            brandedImg.src = canvas.toDataURL();
+            brandedImg.style.width = '280px';
+            brandedImg.style.height = '320px';
+            brandedImg.style.borderRadius = '12px';
+            brandedImg.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.15)';
+            brandedImg.style.margin = '0 auto';
+            brandedImg.style.display = 'block';
+            
+            qrContainer.innerHTML = '';
+            qrContainer.appendChild(brandedImg);
+            
+            // Add success message
+            const successDiv = document.createElement('div');
+            successDiv.innerHTML = `
+                <div style="text-align: center; padding: 10px; background: #d4edda; border-radius: 8px; margin: 10px 0; border: 1px solid #c3e6cb;">
+                    <p style="margin: 0; color: #155724; font-size: 12px;">
+                        <i class="fas fa-check-circle"></i> QR Code generated successfully!
+                    </p>
                 </div>
             `;
-            qrContainer.appendChild(infoDiv);
-        }
+            qrContainer.appendChild(successDiv);
+        };
+        localQR.src = qrDataURL;
         
-        console.log('Branded QR code generated successfully');
-    };
+    } catch (error) {
+        console.error('QR generation failed:', error);
+        qrContainer.innerHTML = `
+            <div style="text-align: center; padding: 20px;">
+                <div style="display: inline-block; padding: 15px; background: #f8d7da; border-radius: 10px; border: 2px solid #dc3545;">
+                    <i class="fas fa-times-circle" style="font-size: 24px; color: #dc3545; margin-bottom: 10px;"></i>
+                    <p style="margin: 0; color: #721c24; font-weight: bold;">QR Code generation failed</p>
+                    <p style="margin: 5px 0 0 0; color: #721c24; font-size: 12px;">Please try again.</p>
+                    <button onclick="showQRCode()" style="margin-top: 10px; padding: 8px 16px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        <i class="fas fa-redo"></i> Try Again
+                    </button>
+                </div>
+            </div>
+        `;
+}
     
     img.onerror = function() {
         clearTimeout(timeout);
