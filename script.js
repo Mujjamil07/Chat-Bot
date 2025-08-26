@@ -160,6 +160,20 @@ class ResumeChatbot {
             
             certificates: [
                 {
+                    name: "Deloitte Data Analytics Job Simulation",
+                    issuer: "Deloitte",
+                    description: "Completed practical tasks in Data analysis and Forensic technology. Certificate of Completion issued by Tina McCreery, Chief Human Resources Officer, Deloitte",
+                    date: "July 16th, 2025",
+                    link: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/io9DzWKe3PTsiS6GG_9PBTqmSxAf6zZTseP_Y8HYafkzTRCsXByAH_1752668850546_completion_certificate.pdf"
+                },
+                {
+                    name: "Deloitte Technology Job Simulation",
+                    issuer: "Deloitte",
+                    description: "Completed practical tasks in Coding and Development. Certificate of Completion issued by Tina McCreery, Chief Human Resources Officer, Deloitte",
+                    date: "July 11th, 2025",
+                    link: "https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/udmxiyHeqYQLkTPvf_9PBTqmSxAf6zZTseP_Y8HYafkzTRCsXByAH_1752230149808_completion_certificate.pdf"
+                },
+                {
                     name: "Full Stack Java Development",
                     issuer: "Codekul Pvt Ltd",
                     description: "Developed and maintained web applications using Java for backend and HTML/CSS, JavaScript for frontend",
@@ -170,12 +184,6 @@ class ResumeChatbot {
                     issuer: "EXL Edubridge India",
                     description: "Collected, cleaned, and analyzed data to find trends and insights",
                     date: "March 2023"
-                },
-                {
-                    name: "Deloitte Australia Technology Job Simulation",
-                    issuer: "Forage",
-                    description: "Completed a job simulation involving development and coding. Wrote a proposal for creating a dashboard",
-                    date: "July 2025"
                 }
             ]
         };
@@ -248,8 +256,13 @@ class ResumeChatbot {
         time.textContent = this.getCurrentTime();
         content.appendChild(time);
         
-        messageDiv.appendChild(avatar);
-        messageDiv.appendChild(content);
+        if (sender === 'user') {
+            messageDiv.appendChild(content);
+            messageDiv.appendChild(avatar);
+        } else {
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+        }
         
         this.chatMessages.appendChild(messageDiv);
         
@@ -409,37 +422,37 @@ class ResumeChatbot {
         const message = userMessage.toLowerCase();
         
         // About me responses
-        if (this.containsAny(message, ['about you', 'tell me about yourself', 'who are you', 'introduce yourself'])) {
+        if (this.containsAny(message, ['about', 'about you', 'about me', 'tell me about yourself', 'who are you', 'introduce yourself', 'yourself', 'intro', 'introduction'])) {
             return this.getAboutMeResponse();
         }
         
         // Skills responses
-        if (this.containsAny(message, ['skills', 'technologies', 'programming languages', 'what can you do'])) {
+        if (this.containsAny(message, ['skills', 'skill', 'technologies', 'technology', 'programming languages', 'languages', 'what can you do', 'tech stack', 'tools'])) {
             return this.getSkillsResponse();
         }
         
         // Experience responses
-        if (this.containsAny(message, ['experience', 'work history', 'jobs', 'employment', 'internship'])) {
+        if (this.containsAny(message, ['experience', 'work history', 'work', 'jobs', 'job', 'employment', 'internship', 'intern', 'career', 'professional'])) {
             return this.getExperienceResponse();
         }
         
         // Projects responses
-        if (this.containsAny(message, ['projects', 'portfolio', 'work', 'applications'])) {
+        if (this.containsAny(message, ['projects', 'project', 'portfolio', 'applications', 'app', 'apps', 'built', 'created', 'developed'])) {
             return this.getProjectsResponse();
         }
         
         // Education responses
-        if (this.containsAny(message, ['education', 'degree', 'university', 'college', 'gpa', 'cgpa'])) {
+        if (this.containsAny(message, ['education', 'edu', 'degree', 'university', 'college', 'gpa', 'cgpa', 'study', 'studies', 'academic', 'qualification'])) {
             return this.getEducationResponse();
         }
         
         // Contact responses
-        if (this.containsAny(message, ['contact', 'email', 'phone', 'linkedin', 'github'])) {
+        if (this.containsAny(message, ['contact', 'email', 'phone', 'linkedin', 'github', 'reach', 'connect', 'get in touch', 'social media'])) {
             return this.getContactResponse();
         }
         
         // Certificates responses
-        if (this.containsAny(message, ['certificates', 'certifications', 'certificate'])) {
+        if (this.containsAny(message, ['certificates', 'certifications', 'certificate', 'cert', 'certs', 'achievement', 'achievements', 'badge', 'badges'])) {
             return this.getCertificatesResponse();
         }
         

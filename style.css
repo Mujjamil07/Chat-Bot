@@ -104,8 +104,10 @@ body {
 
 .message {
     display: flex;
+    align-items: flex-start;
     margin-bottom: 24px;
     animation: fadeIn 0.4s ease-in;
+    gap: 12px;
 }
 
 @keyframes fadeIn {
@@ -135,8 +137,8 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 16px;
-    margin-right: 12px;
     border: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
 }
 
 .bot-message .message-avatar {
@@ -147,8 +149,6 @@ body {
 .user-message .message-avatar {
     background: #28a745;
     color: white;
-    margin-right: 0;
-    margin-left: 12px;
 }
 
 .message-content {
@@ -159,6 +159,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     position: relative;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    flex: 1;
 }
 
 .bot-message .message-content {
@@ -376,7 +377,8 @@ body {
     visibility: hidden;
     transform: translateY(20px);
     transition: all 0.3s ease;
-    max-width: 200px;
+    max-width: 220px;
+    min-width: 200px;
 }
 
 .quick-actions.show {
@@ -398,6 +400,9 @@ body {
     white-space: nowrap;
     text-align: left;
     box-shadow: 0 4px 12px rgba(30, 60, 114, 0.2);
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .quick-actions button:hover {
@@ -613,6 +618,12 @@ body {
         max-width: 80%;
     }
     
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+    
     .modal-content {
         width: 95%;
         margin: 10% auto;
@@ -629,13 +640,17 @@ body {
     .quick-actions {
         bottom: 150px;
         right: 20px;
-        max-width: 180px;
+        max-width: 200px;
+        min-width: 180px;
         padding: 12px;
     }
     
     .quick-actions button {
         padding: 8px 12px;
         font-size: 12px;
+        width: 100%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
 }
 
@@ -827,62 +842,91 @@ body {
 /* Achievement Badges */
 .achievement-badges {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 12px;
     margin: 20px 0;
+    align-items: center;
 }
 
 .achievement-badge {
     background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
     color: white;
-    padding: 12px 16px;
-    border-radius: 25px;
-    font-size: 13px;
+    padding: 16px 20px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: 600;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    min-width: 280px;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.achievement-badge::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.achievement-badge:hover::before {
+    left: 100%;
 }
 
 .achievement-badge:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .achievement-badge:nth-child(2) {
     background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
-    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
 }
 
 .achievement-badge:nth-child(2):hover {
-    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+    box-shadow: 0 15px 35px rgba(78, 205, 196, 0.4);
 }
 
 .achievement-badge:nth-child(3) {
     background: linear-gradient(135deg, #45b7d1 0%, #96c93d 100%);
-    box-shadow: 0 4px 15px rgba(69, 183, 209, 0.3);
+    box-shadow: 0 8px 25px rgba(69, 183, 209, 0.3);
 }
 
 .achievement-badge:nth-child(3):hover {
-    box-shadow: 0 8px 25px rgba(69, 183, 209, 0.4);
+    box-shadow: 0 15px 35px rgba(69, 183, 209, 0.4);
 }
 
 .achievement-badge:nth-child(4) {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.3);
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.3);
 }
 
 .achievement-badge:nth-child(4):hover {
-    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.4);
+    box-shadow: 0 15px 35px rgba(240, 147, 251, 0.4);
 }
 
 /* Emoji Animations */
 .emoji {
     display: inline-block;
     animation: bounce 2s infinite;
+    font-size: 16px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.achievement-badge .emoji {
+    font-size: 18px;
+    animation: pulse 2s infinite;
 }
 
 @keyframes bounce {
@@ -894,6 +938,15 @@ body {
     }
     60% {
         transform: translateY(-5px);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
     }
 }
 
@@ -926,12 +979,15 @@ body {
     }
     
     .achievement-badges {
-        gap: 8px;
+        gap: 10px;
+        align-items: center;
     }
     
     .achievement-badge {
-        font-size: 12px;
-        padding: 10px 14px;
+        font-size: 13px;
+        padding: 14px 18px;
+        min-width: 250px;
+        gap: 10px;
     }
     
     .project-showcase {
@@ -945,6 +1001,29 @@ body {
     .tech-tag {
         font-size: 11px;
         padding: 5px 10px;
+    }
+    
+    .contact-info {
+        padding: 15px;
+        max-width: 100%;
+    }
+    
+    .contact-info p {
+        font-size: 14px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .contact-info strong {
+        min-width: 70px;
+        flex-shrink: 0;
+    }
+    
+    .contact-info a {
+        padding: 3px 6px;
+        font-size: 13px;
+        word-break: break-all;
+        max-width: 100%;
     }
 }
 
@@ -1039,6 +1118,23 @@ body.dark-mode .achievement-badge {
     border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
+body.dark-mode .contact-info {
+    background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .contact-info a {
+    color: #63b3ed;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .contact-info a:hover {
+    color: #90cdf4;
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(99, 179, 237, 0.3);
+}
+
 body.dark-mode .quick-actions {
     background: rgba(45, 55, 72, 0.98);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1064,6 +1160,58 @@ body.dark-mode .floating-action-btn.active {
 
 body.dark-mode .floating-action-btn::before {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* Contact Information Styles */
+.contact-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 15px 0;
+    color: white;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.contact-info p {
+    margin: 12px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+}
+
+.contact-info strong {
+    font-weight: 600;
+    color: white;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.contact-info a {
+    color: #ffd700;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    word-break: break-all;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    display: inline-block;
+}
+
+.contact-info a:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+    box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
 }
 
 /* Resume Download Button Styles */

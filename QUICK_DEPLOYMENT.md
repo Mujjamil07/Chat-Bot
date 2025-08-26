@@ -62,3 +62,4 @@ Your chatbot is running locally (`file:///C:/Users/Asus/chatbot-project/index.ht
 
 ---
 **Deploy first, then QR code will work perfectly! 🚀**
+

@@ -45,3 +45,4 @@ git push -u origin main
 ```
 
 **After deployment, your QR code will work perfectly! 🎉**
+
