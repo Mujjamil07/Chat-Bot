@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature Template</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        
+        .signature-container {
+            max-width: 600px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .signature {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            line-height: 1.6;
+        }
+        
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .title {
+            font-size: 16px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info {
+            margin-bottom: 15px;
+        }
+        
+        .contact-item {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .contact-item a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+        
+        .ai-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 3px solid #28a745;
+        }
+        
+        .ai-title {
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 8px;
+        }
+        
+        .ai-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .copy-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .instructions {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="signature-container">
+        <h2>📧 Email Signature Template</h2>
+        
+        <div class="signature" id="emailSignature">
+            <div class="name">Mujjamil Chand Shaikh</div>
+            <div class="title">Full Stack Developer & Data Analyst</div>
+            
+            <div class="contact-info">
+                <div class="contact-item">📧 <a href="mailto:mujjamil007.dev@gmail.com">mujjamil007.dev@gmail.com</a></div>
+                <div class="contact-item">📱 <a href="tel:+918668205361">+91 8668205361</a></div>
+                <div class="contact-item">💼 <a href="https://www.linkedin.com/in/mujjamil007-dev" target="_blank">linkedin.com/in/mujjamil007-dev</a></div>
+                <div class="contact-item">🐙 <a href="https://github.com/Mujjamil07" target="_blank">github.com/Mujjamil07</a></div>
+                <div class="contact-item">🌍 Satara, Maharashtra, India</div>
+            </div>
+            
+            <div class="ai-section">
+                <div class="ai-title">🤖 Chat with my AI Resume Assistant</div>
+                <div class="ai-link">🔗 <a href="https://mujjamil07.github.io/Chat-Bot/" target="_blank">mujjamil07.github.io/Chat-Bot</a></div>
+                <div style="font-size: 12px; color: #666; margin-top: 5px;">Interactive Q&A • QR Code Access • PDF Download</div>
+            </div>
+        </div>
+        
+        <button class="copy-btn" onclick="copySignature()">📋 Copy Email Signature</button>
+        
+        <div class="instructions">
+            <h3>📋 How to Use:</h3>
+            <ol>
+                <li><strong>Copy</strong> the signature above</li>
+                <li><strong>Gmail:</strong> Settings → General → Signature</li>
+                <li><strong>Outlook:</strong> File → Options → Mail → Signatures</li>
+                <li><strong>Apple Mail:</strong> Mail → Preferences → Signatures</li>
+                <li><strong>Paste</strong> the signature and save</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function copySignature() {
+            const signature = document.getElementById('emailSignature');
+            const range = document.createRange();
+            range.selectNode(signature);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                alert('✅ Email signature copied! Now paste it in your email client settings.');
+            } catch (err) {
+                alert('❌ Copy failed. Please select and copy manually.');
+            }
+            
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+</body>
+</html>

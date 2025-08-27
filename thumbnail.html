@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Thumbnail Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .thumbnail-container {
+            width: 1200px;
+            height: 627px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255,255,255,0.05) 0%, transparent 50%);
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            padding: 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        
+        .main-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .features {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.15);
+            padding: 15px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .url-section {
+            background: rgba(255,255,255,0.1);
+            padding: 20px 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .url-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .url-link {
+            font-size: 16px;
+            opacity: 0.9;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .qr-hint {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #0077b5;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .download-btn:hover {
+            background: #005885;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 1300px) {
+            .thumbnail-container {
+                width: 100%;
+                max-width: 1200px;
+                height: auto;
+                aspect-ratio: 1200/627;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="download-btn" onclick="downloadThumbnail()">
+        📥 Download Thumbnail
+    </button>
+    
+    <div class="thumbnail-container" id="thumbnail">
+        <div class="background-pattern"></div>
+        <div class="content">
+            <h1 class="main-title">🤖 AI Resume Assistant</h1>
+            <p class="subtitle">Interactive Chatbot for Professional Showcase</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">💬</div>
+                    <div class="feature-text">Interactive Q&A</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">QR Code Access</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-text">PDF Download</div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌙</div>
+                    <div class="feature-text">Dark Mode</div>
+                </div>
+            </div>
+            
+            <div class="url-section">
+                <div class="url-text">🔗 Access My AI Assistant</div>
+                <div class="url-link">mujjamil07.github.io/Chat-Bot</div>
+            </div>
+        </div>
+        
+        <div class="qr-hint">
+            📱 Scan QR Code
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadThumbnail() {
+            const thumbnail = document.getElementById('thumbnail');
+            
+            html2canvas(thumbnail, {
+                width: 1200,
+                height: 627,
+                scale: 2,
+                backgroundColor: null,
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'mujjamil-ai-resume-assistant-thumbnail.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(error => {
+                console.error('Error generating thumbnail:', error);
+                alert('Error generating thumbnail. Please try again.');
+            });
+        }
+        
+        // Auto-download after 2 seconds (optional)
+        // setTimeout(downloadThumbnail, 2000);
+    </script>
+</body>
+</html>
