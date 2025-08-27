@@ -88,6 +88,22 @@
             <div class="modal-body">
                 <div id="qrCode"></div>
                 <p>Scan this QR code to access Mujjamil's interactive resume chatbot!</p>
+                
+                <!-- Direct Link Section -->
+                <div class="direct-link-section" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                    <h4 style="margin: 0 0 10px 0; color: #333;">📱 Direct Access</h4>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Can't scan QR? Use this direct link:</p>
+                    <div class="link-container" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="chatbotLink" value="https://mujjamil07.github.io/Chat-Bot/" readonly style="padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; background: white; font-size: 14px; width: 300px; text-align: center;">
+                        <button onclick="copyLink()" style="padding: 8px 12px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <a href="https://mujjamil07.github.io/Chat-Bot/" target="_blank" style="display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+                        <i class="fas fa-external-link-alt"></i> Open Chatbot
+                    </a>
+                </div>
+                
                 <button class="download-btn" onclick="downloadQR()">
                     <i class="fas fa-download"></i> Download QR Code
                 </button>

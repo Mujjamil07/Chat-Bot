@@ -1574,3 +1574,86 @@ function getContactResponse() {
     
     <p><strong>🚀 Ready to discuss exciting opportunities!</strong></p>`;
 }
+
+// Copy chatbot link to clipboard
+function copyLink() {
+    try {
+        const linkInput = document.getElementById('chatbotLink');
+        if (linkInput) {
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(linkInput.value).then(() => {
+                    showCopySuccess();
+                }).catch(() => {
+                    // Fallback to execCommand
+                    fallbackCopyTextToClipboard(linkInput.value);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(linkInput.value);
+            }
+        }
+    } catch (error) {
+        console.error('Error copying link:', error);
+        showCopyError();
+    }
+}
+
+// Fallback copy function for older browsers
+function fallbackCopyTextToClipboard(text) {
+    try {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        const successful = document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        if (successful) {
+            showCopySuccess();
+        } else {
+            showCopyError();
+        }
+    } catch (error) {
+        console.error('Fallback copy failed:', error);
+        showCopyError();
+    }
+}
+
+// Show copy success message
+function showCopySuccess() {
+    const copyBtn = document.querySelector('button[onclick="copyLink()"]');
+    if (copyBtn) {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+        copyBtn.style.background = '#28a745';
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.background = '#667eea';
+        }, 2000);
+    }
+}
+
+// Show copy error message
+function showCopyError() {
+    const copyBtn = document.querySelector('button[onclick="copyLink()"]');
+    if (copyBtn) {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<i class="fas fa-times"></i> Failed';
+        copyBtn.style.background = '#dc3545';
+        
+        setTimeout(() => {
+            copyBtn.innerHTML = originalText;
+            copyBtn.style.background = '#667eea';
+        }, 2000);
+    }
+}
